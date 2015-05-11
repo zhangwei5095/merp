@@ -17,7 +17,7 @@ return array(
     'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
     'ADMIN' => '0',//是否屏蔽管理员修改功能;1 不屏蔽  0 屏蔽
     'DB_TYPE'=>'mysql',
-    'DB_HOST'=>'localhost',
+    'DB_HOST'=>'127.0.0.1',
     'DB_PORT'=>'3306',
     'DB_NAME'=>'moke',
     'DB_USER'=>'root',
