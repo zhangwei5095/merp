@@ -1,0 +1,181 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<include file="./Application/Erp/View/Common/jqplot.html"/>
+<script type="text/javascript">
+$(function () {
+	var line1=[{$line}];
+	var act={$act};
+	if(act==1){
+		var formatstr = '%Y-%m-%#d';
+	}else{
+		var formatstr = '%Y-%#m';
+		
+	}
+    $.jqplot('chart1', [line1], {
+        title: "采购金额统计折线图", //图表标题
+        axes: {
+            xaxis:{
+            	label: "月份",
+            	renderer: $.jqplot.DateAxisRenderer,
+            	tickOptions:{formatString:formatstr} 
+            	/* renderer: $.jqplot.CategoryAxisRenderer, // 设置横（纵）轴上数据加载的渲染器  
+                ticks: ticks */
+              },
+              yaxis:{
+            	  label: "数量", 
+            	  min :{$min},
+            	  max :{$m},
+            	  tickOptions:{formatString:'%#d'}
+              }
+        } ,
+        highlighter: {
+            show: true ,
+            sizeAdjust: 5,
+            //tooltipAxes: 'y',
+            tooltipContentEditor:tooltipContentEditor
+         },
+        cursor: {
+          show: false
+        } ,
+        series: [{
+            lineWidth: 1, //指定折线的宽度
+            markerOptions: { style: "dimaond" } //指定折线的样式
+        }]
+    });
+    
+    $.jqplot('chart2', [line1], {
+        title: "采购金额统计柱状图", //图表标题
+        seriesDefaults: {  
+            renderer: $.jqplot.BarRenderer, // 利用渲染器（BarRenderer）渲染现有图表  
+            pointLabels: { show: true },
+            rendererOptions: {
+            	barPadding: 8, //设置同一分类两个柱状条之间的距离(px)
+            	barMargin: 10, //设置不同分类两个柱状条之间的距离(px)(同一个横坐标表点上)
+            	barDirection: 'vertical', //设置柱状图显示的方向：垂直显示和水平显示，默认垂直显示 vertical or horizontal.
+            	barWidth: 50, //设置柱状图中每个柱状条的宽度
+            	}
+        }, 
+        axes: {
+            xaxis:{
+            	label: "月份",
+            	renderer: $.jqplot.DateAxisRenderer,
+            	tickOptions:{formatString:formatstr} 
+              },
+              yaxis:{
+            	  label: "数量", 
+            	  min :{$min},
+            	  max :{$m},
+            	  tickOptions:{formatString:'%#d'}
+              }
+        } ,
+        highlighter: {
+            show: true ,
+            sizeAdjust: 5,
+            //tooltipAxes: 'y',
+            tooltipContentEditor:tooltipContentEditor
+         },
+        cursor: {
+          show: true
+        }
+    });
+});
+	
+function _submit(obj){
+	//日统计 1  月统计2
+	$("#act").val(obj);
+	document.form.submit();
+}
+
+</script>
+<form action="{:U('Statistics/purchase',array('op'=>$op))}" name="form" method="post" >
+<input type="hidden" name="act" id="act" value="{$act}">
+<input type="hidden" name="op" id="op" value="{$op}">
+<div class="container" id="container" style="width: 100%;">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>统计报表</h3>
+	    <p>统计采购、库存、财务等信息 </p>
+	  	</div>
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<a href="{:U('Statistics/index')}" class="btn btn-default"  >返回</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">采购金额统计<if condition="$act eq 1 ">(日统计)<else/>(月统计)</if>
+              </h4>
+            </div>
+            <div class="panel-body">
+	            <div class="panel panel-default">
+					  <div class="panel-body">
+					    <div class="form-group col-sm-6">
+						    <label class="col-sm-3 control-label text-right">
+							   起始时间：
+						    </label>
+						    <div class="col-sm-9">
+						    	<input class="form-control" name="begintime" id="begintime" type="text" value="{$begintime}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endtime\')}'})" placeholder="起始时间">
+						    </div>
+					 	</div>
+					 	<div class="form-group col-sm-6">
+						    <label class="col-sm-3 control-label text-right">
+							   结束时间：
+						    </label>
+						    <div class="col-sm-9">
+						    	<input class="form-control" name="endtime" id="endtime" type="text" <if condition="$endtime eq ''">value="{$Think.NOW_TIME|date='Y-m-d',###}"<else/>value="{$endtime}"</if> onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'%y-%M-%d'})" placeholder="结束时间">
+						    </div>
+					 	</div>
+					 	<div class="form-group col-sm-12 text-center">
+						 	<input type="button" class="btn btn-primary" onclick="_submit(1)" value="按日统计">
+						 	&nbsp;
+						 	<input type="button" class="btn btn-primary" onclick="_submit(2)" value="按月统计">
+					 	</div>
+					 	<div class="form-group col-sm-12">
+		            		<ul id="myTab" class="nav nav-tabs">
+							   <li class="active">
+							      <a href="#statistics3" data-toggle="tab">折线图</a>
+							   </li>
+							   <li><a href="#statistics2" data-toggle="tab">柱状图</a></li>
+							</ul>
+							<div id="myTabContent" class="tab-content">
+							   		<table class="table table-striped table-hover">
+					                <thead>
+					                  <tr>
+					                  	<th>序号</th>
+						                <th>日期</th>
+						                <th>数量</th>
+					              	 </tr>
+					                </thead>
+					                <tbody>
+						                <volist name="Purchase" id="list" empty="暂时没有数据" key="k" >
+											<tr>
+												<td>{$k}</td>
+												<td>{$list.month}</td>
+												<td>{$list.total}</td>
+											</tr> 
+										</volist>	
+					                </tbody>
+					              </table>
+							   <div class="tab-pane active" id="statistics3">
+							   		<div id="chart1"style="width:100%;height:400px;" ></div>
+							   </div>
+							   <div class="tab-pane active" id="statistics2" >
+							      	<div id="chart2"style="width:100%;height:400px;" ></div>
+							   </div>
+							</div>
+					   </div>
+					  </div>
+				 </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+</form>
+<include file="./Application/Erp/View/Common/footer.html"/>

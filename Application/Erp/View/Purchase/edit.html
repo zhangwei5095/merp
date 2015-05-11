@@ -1,0 +1,181 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<script>
+function validate(){
+	var supplier = $("#supplier").val();
+	var in_num = $("#in_num").val();
+	var in_price = $("#in_price").val();
+	var purchase = $("#purchase").val();
+
+	if(supplier ==''){
+		alert("供应商不允许为空！");
+		return false;
+	}
+	if(in_num ==''){
+		alert("入库数量（采购数量）不允许为空！");
+		return false;
+	}
+	if(in_price ==''){
+		alert("商品单价不允许为空！");
+		return false;
+	}
+	if(purchase ==''){
+		alert("采购时间不允许为空！");
+		return false;
+	}
+	
+
+	document.form.submit();
+}
+function getPayment(obj){
+	var in_num = $("#in_num").val();//进货数
+	var in_price = $("#in_price").val();//进货价
+	var express = $("#express").val();//邮费
+	var payment = $("#payment").val();//付款
+	if(in_num!=null){
+		if(in_price!=null){
+			payment = parseFloat(in_price) * parseInt(in_num);
+			if(express!=null){
+				payment = payment + parseFloat(express);
+			}
+		}else{
+			payment = 0;
+		}
+	}else{
+		payment = 0;
+	}
+	payment = payment + "";
+	if(payment.indexOf(".")>0){
+	    payment = payment.substring(0,payment.indexOf(".") + 3);
+	}
+	$("#payment").val(payment);
+}
+
+</script>
+<div class="container" id="container" style="width: 100%;">
+<form action="{:U('Purchase/save')}" name="form" method="post">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>采购管理</h3>
+	    <p>查看和管理商品采购</p>
+	  	</div>
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<input type="button" class="btn btn-primary" onclick="validate()" value="提交">
+			<a href="{:U('Purchase/index',array('pid'=>0))}" class="btn btn-default"  >返回</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">商品入库
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						 商品名称：
+					    </label>
+					    <div class="col-sm-9">
+					   	 <input class="form-control" name="goods_name" id="goods_name" type="text" value="{$Purchase['goods_name']}" readonly="readonly">
+					     <input type="hidden" name="goods_id" value="{$Purchase['goods_id']}">
+					     <input type="hidden" name="cat_id" value="{$Purchase['cat_id']}">
+					     <input type="hidden" name="ac" value="{$ac}">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>商品条形码/代码：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="goods_sn" id="goods_sn" type="text" value="{$Purchase['goods_sn']}" readonly="readonly">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>供应商：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="supplier" id="supplier" type="text" value="{$Purchase['supplier']}" placeholder="供应商">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>入库数量（采购数量）：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="in_num" id="in_num" type="text" value="{$Purchase['in_num']}" placeholder="入库数量" onchange="getPayment(this)">
+					    	<input type="hidden" name="in_num_old" value="{$Purchase['in_num']}">
+					    	<input type="hidden" name="id" value="{$Purchase['id']}">
+					    </div>
+					 </div>
+ 					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>进价：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="in_price" id="in_price" type="text" value="{$Purchase['in_price']}" onchange="getPayment(this)">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   快递费：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="express" id="express" type="text" value="{$Purchase['express']}" placeholder="快递费" onchange="getPayment(this)">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						  付款金额：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="payment" id="payment" type="text" value="{$Purchase['payment']}" placeholder="付款金额">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						 订单状态：
+					    </label>
+					    <div class="col-sm-9">
+					    	<select name="order_status" class="form-control">
+					    		<option value="0" <if condition="$Order['order_status'] eq 0">selected="selected"</if>>已确认</option>
+								<option value="1" <if condition="$Order['order_status'] eq 1">selected="selected"</if>>已付款</option>
+								<option value="2" <if condition="$Order['order_status'] eq 2">selected="selected"</if>>已发货</option>
+								<option value="3" <if condition="$Order['order_status'] eq 3">selected="selected"</if>>已完成</option>
+								<option value="4" <if condition="$Order['order_status'] eq 4">selected="selected"</if>>退货中</option>
+								<option value="5" <if condition="$Order['order_status'] eq 5">selected="selected"</if>>已退货</option>
+					    	</select>
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>采购时间：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="purchase" id="purchase" type="text" value="{$Purchase['purchase']}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="入库时间">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   入库时间（收货时间）：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="dateymd" id="dateymd" type="text" value="{$Purchase['dateymd']}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="入库时间">
+					    </div>
+					 </div>
+				</div>
+            </div>
+          </div>
+        </div>
+      </div>
+</form>
+</div>
+<include file="./Application/Erp/View/Common/footer.html"/>

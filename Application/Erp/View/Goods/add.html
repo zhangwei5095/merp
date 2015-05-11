@@ -1,0 +1,268 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery.ztree.core-3.5.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jquery.ztree.excheck-3.5.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/assets/css/zTreeStyle/zTreeStyle.css" type="text/css" media="screen" />
+<script type="text/javascript">
+
+function validate(){
+	var cat_id = $("#cat_id").val();
+	var goods_sn = $("#goods_sn").val();
+	var goods_name = $("#goods_name").val();
+	var out_price = $("#out_price").val();
+	var in_price = $("#in_price").val();
+
+
+	if(cat_id ==''){
+		alert("商品分类不允许为空！");
+		return false;
+	}
+	if(goods_sn ==''){
+		alert("商品条形码/代码不允许为空！");
+		return false;
+	}
+	if(goods_name ==''){
+		alert("商品名称不允许为空！");
+		return false;
+	}
+	if(out_price ==''){
+		alert("商品售价不允许为空！");
+		return false;
+	}
+	/* if(in_price ==''){
+		alert("商品进价不允许为空！");
+		return false;
+	} */
+
+	document.form.submit();
+}
+
+		var setting = {
+			check: {
+				enable: true,
+				chkStyle: "radio",
+				radioType: "all"
+			},
+			view: {
+				dblClickExpand: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				onClick: onClick,
+				onCheck: onCheck
+			}
+		};
+
+		var zNodes = {$category};
+
+		function onClick(e, treeId, treeNode) {
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			zTree.checkNode(treeNode, !treeNode.checked, null, true);
+			return false;
+		}
+
+		function onCheck(e, treeId, treeNode) {
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+			nodes = zTree.getCheckedNodes(true),
+			v = "";
+			for (var i=0, l=nodes.length; i<l; i++) {
+				v += nodes[i].name + ",";
+			}
+			if (v.length > 0 ) v = v.substring(0, v.length-1);
+			var cityObj = $("#citySel");
+			cityObj.attr("value", v);
+			
+			c = "";
+			for (var i=0, l=nodes.length; i<l; i++) {
+				c += nodes[i].id + ",";
+			}
+			if (c.length > 0 ) c = c.substring(0, c.length-1);
+			var cat_id = $("#cat_id");
+			cat_id.attr("value", c);
+		}
+
+		function showMenu() {
+			var cityObj = $("#citySel");
+			var cityOffset = $("#citySel").offset();
+			$("#menuContent").slideDown("fast");
+
+			$("body").bind("mousedown", onBodyDown);
+		}
+		function hideMenu() {
+			$("#menuContent").fadeOut("fast");
+			$("body").unbind("mousedown", onBodyDown);
+		}
+		function onBodyDown(event) {
+			if (!(event.target.id == "menuBtn" || event.target.id == "citySel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+				hideMenu();
+			}
+		}
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		});
+	</SCRIPT>
+	<style>
+	.menuContent{
+		position: absolute;
+		left: 15px;
+		top: 35px;
+		z-index: 999;
+		background-color: rgb(227, 226, 246);
+		overflow:auto;
+		height:300px; 
+		width:500px; 
+	}
+	</style>
+<div class="container" id="container" style="width: 100%;">
+<form action="{:U('Goods/save')}" name="form" method="post">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>商品管理</h3>
+	    <p>查看和管理商品 </p>
+	  	</div>
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<input type="button" class="btn btn-primary" onclick="validate()" value="提交">
+			<a href="{:U('Goods/index')}" class="btn btn-default"  >返回</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">添加商品
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   所属分类：
+					    </label>
+					    <div class="col-sm-9">
+					    <input id="citySel"  class="form-control"  type="text" readonly value="" onclick="showMenu();" />
+					    <input id="cat_id" name="cat_id" type="hidden"/>
+						<div id="menuContent" class="menuContent" style="display:none;">
+							<ul id="treeDemo" class="ztree"></ul>
+						</div>
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>商品条形码/代码：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="goods_sn" id="goods_sn" type="text" placeholder="商品条形码/代码">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>商品名称：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="goods_name" id="goods_name" type="text" placeholder="商品名称">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>商品售价：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="out_price" id="out_price" type="text" placeholder="商品售价(元)">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   市场价：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="market_price" id="market_price" type="text" placeholder="市场价(元)">
+					    	<br />
+					    	<small>默认市场价为售价的1.2倍</small>
+					    </div>
+					 </div>
+					 <!-- <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>商品进价：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="" id="in_price" type="text" placeholder="商品进价(元)">
+					    </div>
+					 </div> -->
+					 <!-- <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   入库数量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="in_num" id="in_num" type="text" placeholder="入库数量">
+					    </div>
+					 </div> -->
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   商品重量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="weight" id="weight" type="text" placeholder="商品重量(千克)">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   商品规格：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="specification" id=specification type="text" placeholder="商品规格">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   库存警告数量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="warn_stock" id="warn_stock" type="text" placeholder="库存警告数量" value="1">
+					    	<br /><small>低于该数量时会提示</small>
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						  商品单位：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="unit" id="unit" type="text" placeholder="商品单位(盒、片、箱)">
+					    </div>
+					 </div>
+					 <!-- <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						  会员优惠：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input name="ismemberprice" type="radio" value="1" checked="checked" />启用
+					    	<input name="ismemberprice" type="radio" value="0" />禁用
+					    </div>
+					 </div> -->
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						  商品简介：
+					    </label>
+					    <div class="col-sm-9">
+					    	<textarea class="form-control" name="goods_desc" id="goods_desc"  placeholder="商品简介"></textarea>
+					    </div>
+					 </div>
+				</div>
+            </div>
+          </div>
+        </div>
+      </div>
+</form>
+</div>
+<include file="./Application/Erp/View/Common/footer.html"/>

@@ -1,0 +1,93 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<div class="container" style="width: 100%;">
+	<br>
+	<div class="row">
+	<div class="page-header">
+	  <h1>&nbsp;&nbsp;&nbsp;欢迎您 ! <small>&nbsp;{$Think.session.admin_realname}[{$Think.session.admin_name}]</small>
+	  <a href="{:U('Helper/aboutus')}" class="btn btn-primary" style="float:right;margin-right: 28px;" >声明</a>
+	  </h1>
+	</div>
+	</div>
+	<br>
+<div class="jumbotron">
+	<div class="row">
+		<div class="col-sm-12">
+			<a href="{:U('Home/index',array('refresh'=>1))}" class="btn btn-default" style="float:right;margin-bottom: 10px;" title="默认首页统计数据为缓存中数据，点击刷新更新缓存">刷新</a>
+		</div>
+		<div class="col-sm-12">
+			<div class="alert alert-info alert-dismissible" role="alert">
+				 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				 <strong>商品总数：</strong>{$goodscount}&nbsp;&nbsp;
+				 <strong>已经销售的总金额：</strong>{$salesamount}&nbsp;&nbsp;
+				 <strong>库存总数：</strong>{$stock}&nbsp;&nbsp;
+				 <strong>库存商品总价：</strong>{$countamount}&nbsp;&nbsp;
+				 <strong style="float:right;">默认首页统计数据为缓存中数据，点击“刷新”更新缓存</strong>
+				 
+			</div>
+		</div>
+	
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">销售排行 
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+             	<table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>商品名称</th>
+                    <th>销量</th>
+                    <th>销售额</th>
+                  </tr>
+                </thead>
+                <tbody>
+	                <volist name="salestop" id="list" empty="暂时没有数据" >
+						<tr>
+							<td>{$list.goods_name}</td>
+							<td>{$list.a}</td>
+							<td>{$list.b}元</td>
+						</tr> 
+					</volist>	
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /.col-sm-6 -->
+        <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">缺货的商品
+               <!-- <span class="badge">2</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+             	<table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>商品名称</th>
+                    <th>库存</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 <volist name="goodsstock" id="list" empty="暂无缺货商品" >
+						<tr>
+							<td>{$list.goods_name}</td>
+							<td>{$list.stock}</td>
+							<td>
+							<a href="{:U('Purchase/add',array('goods_id'=>$list['goods_id']))}" title="新增入库" >入库</a>
+							</td>
+						</tr> 
+					</volist>
+                  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+</div>
+<include file="./Application/Erp/View/Common/footer.html"/>

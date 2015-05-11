@@ -1,0 +1,170 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<div class="container" id="container" style="width: 100%;">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>订单管理</h3>
+	    <p>查看和管理商品订单 </p>
+	  	</div>
+	</div>
+	<div class="alert alert-warning alert-dismissible" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<strong>购物流程</strong>：创建分类信息->创建商品信息->创建采购信息--->创建买家会员信息-><strong>创建订单信息</strong>
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<if condition="$_SESSION['admin_gid'] eq 1">
+			<a href="{:U('Sales/add')}" class="btn btn-primary"  >新增</a>
+			</if>
+			<a href="{:U('Sales/index')}" class="btn btn-default"  >刷新</a>
+			<a href="{:U('Sales/export')}" class="btn btn-default"  >导出</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">销售订单
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="table-responsive">
+             	<table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                  	<th>序号</th>
+	                <th>订单号</th>
+	                <th>客户信息</th>
+	                <th>订单类型</th>
+	                <th>支付类型</th>
+	                <th>出货数量</th>
+	                <th>总计金额</th>
+	                <!-- <th>物流单号</th> -->
+	                <th>订单时间</th>
+	                <th>订单状态</th>
+	                <th>支付状态</th>
+	                <th>操作</th>
+              	 </tr>
+                </thead>
+                <tbody>
+	                <volist name="Order" id="list" empty="暂时没有数据" key="k" >
+						<tr>
+							<td>{$k}</td>
+							<td>{$list.order_no}</td>
+							<td>{$list.realname}</td>
+							<td>
+								<if condition="$list['order_type'] eq 1">零售</if>
+								<if condition="$list['order_type'] eq 2">代理</if>
+							</td>
+							<td>
+								<if condition="$list['pay_type'] eq 1">银行转账</if>
+								<if condition="$list['pay_type'] eq 2">支付宝</if>
+								<if condition="$list['pay_type'] eq 3">微信支付</if>
+								<if condition="$list['pay_type'] eq 4">理财通支付</if>
+								<if condition="$list['pay_type'] eq 5">其他</if>
+							</td>
+							<td>{$list.num_total}</td>
+							<td>{$list.amount_total}</td>
+							<!-- <td>{$list.logistics_no}</td> -->
+							<td>{$list.order_time}<!-- {$list.dateline|date='Y-m-d',###} --></td>
+							<td>
+								<div class="btn-group">
+								<a class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" href="#" onclick="return false;">
+									<if condition="$list['order_status'] eq 0"><span class ="red">已确认</span></if>
+									<if condition="$list['order_status'] eq 1"><span class ="red">已付款</span></if>
+									<if condition="$list['order_status'] eq 2"><span class ="red">已发货</span></if>
+									<if condition="$list['order_status'] eq 3"><span class ="green">已完成</span></if>
+									<if condition="$list['order_status'] eq 4"><span class ="yellow">退货中</span></if>
+									<if condition="$list['order_status'] eq 5"><span class ="yellow">退货完成</span></if>
+									<span class="caret"></span>
+								</a>
+								<if condition="$_SESSION['admin_gid'] eq 1">
+								<if condition="$list['order_status'] neq  5">
+									<ul class="dropdown-menu pull-right">
+										<if condition="$list['order_status'] elt 0">
+											<li><a href="{:U('Sales/status',array('id'=>$list['order_id'],'order_status'=>1))}">已付款</a> 
+											</li> 
+										</if>
+										<if condition="$list['order_status'] elt 1">
+											<li><a href="{:U('Sales/status',array('id'=>$list['order_id'],'order_status'=>2))}">已发货</a> 
+											</li> 
+										</if>
+										<if condition="$list['order_status'] elt 2">
+											<li><a href="{:U('Sales/status',array('id'=>$list['order_id'],'order_status'=>3))}">已完成</a> 
+											</li> 
+										</if>
+										<if condition="$list['order_status'] elt 3">
+											<li><a href="{:U('Sales/status',array('id'=>$list['order_id'],'order_status'=>4))}">退货中</a> 
+											</li> 
+										</if>
+										<if condition="$list['order_status'] elt 4">
+											<li><a href="{:U('Sales/status',array('id'=>$list['order_id'],'order_status'=>5))}">退货完成</a> 
+											</li> 
+										</if>
+									</ul>
+								</if>
+								</if>
+							</div>
+							</td>
+							<td>
+							<div class="btn-group">
+								<a class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" href="#" onclick="return false;">
+									<if condition="$list['pay_status'] eq 1"><span class ="red">未付款</span></if>
+									<if condition="$list['pay_status'] eq 2"><span class ="red">部分付款</span></if>
+									<if condition="$list['pay_status'] eq 3"><span class ="green">已付款</span></if>
+									<if condition="$list['pay_status'] eq 4"><span class ="yellow">部分退款</span></if>
+									<if condition="$list['pay_status'] eq 5"><span class ="yellow">完全退款</span></if>
+									<span class="caret"></span>
+								</a>
+								<if condition="$_SESSION['admin_gid'] eq 1">
+								<if condition="$list['pay_status'] neq  5">
+									<ul class="dropdown-menu pull-right">
+										<if condition="$list['pay_status'] lt 1">
+											<li><a href="{:U('Sales/paystatus',array('id'=>$list['order_id'],'pay_status'=>1))}">未付款</a> 
+											</li> 
+										</if>
+										<if condition="$list['pay_status'] lt 2">
+											<li><a href="{:U('Sales/paystatus',array('id'=>$list['order_id'],'pay_status'=>2))}">部分付款</a> 
+											</li> 
+										</if>
+										<if condition="$list['pay_status'] lt 3">
+											<li><a href="{:U('Sales/paystatus',array('id'=>$list['order_id'],'pay_status'=>3))}">已付款</a> 
+											</li> 
+										</if>
+										<if condition="$list['pay_status'] lt 4">
+											<li><a href="{:U('Sales/paystatus',array('id'=>$list['order_id'],'pay_status'=>4))}">部分退款</a> 
+											</li> 
+										</if>
+										<if condition="$list['pay_status'] lt 5">
+											<li><a href="{:U('Sales/paystatus',array('id'=>$list['order_id'],'pay_status'=>5))}">完全退款</a> 
+											</li> 
+										</if>
+									</ul>
+								</if>
+								</if>
+							</div>
+							</td>
+							<td>
+							<a href="{:U('Sales/detail',array('id'=>$list['order_id']))}" class="btn btn-sm btn-primary">查看</a>
+							<if condition="$_SESSION['admin_gid'] eq 1">
+							<a href="{:U('Sales/edit',array('id'=>$list['order_id']))}" class="btn btn-sm btn-primary">编辑</a>
+							<a href="{:U('Sales/refund',array('id'=>$list['order_id']))}" class="btn btn-sm btn-warning">退货</a>
+							<a href="{:U('Sales/delete',array('order_id'=>$list['order_id']))}" onclick="return(confirm('确认删除订单吗?'))" class="btn btn-sm btn-danger" title="订单删除后库存不会自动恢复" >删除</a>
+							</if>
+							</td>
+						</tr> 
+					</volist>	
+                </tbody>
+              </table>
+	          </div>
+              <div class="sabrosus">{$page}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+<include file="./Application/Erp/View/Common/footer.html"/>

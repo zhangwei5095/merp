@@ -1,0 +1,89 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<script type="text/javascript">
+function validate(){
+	var title = $("#title").val();
+	var content = $("#content").val();
+	if(title ==''){
+		alert("主题不允许为空！");
+		return false;
+	}else if(title.length<5){
+		alert("主题字数不够！");
+		return false;
+	}
+	if(content ==''){
+		alert("内容不允许为空！");
+		return false;
+	}else if(content.length<20){
+		alert("内容字数不够！");
+		return false;
+	}
+	document.form.submit();
+}
+</script>
+<form action="{:U('Helper/feedbacksubmit')}" name="form" method="post">
+<div class="container" id="container" style="width: 100%;">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>意见反馈</h3>
+	    <p>请详细填写反馈意见，方便我们继续改进！</p>
+	  	</div>
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<input type="button" class="btn btn-primary" onclick="validate()" value="提交">
+			<a href="{:U('Home/index',array('pid'=>0))}" class="btn btn-default"  >返回</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">反馈内容
+              </h4>
+            </div>
+            <div class="panel-body">
+				<div class="controls">  
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>主题：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="title" id="title" type="text" placeholder="主题（至少5字）">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   反馈人：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="person" id="person" type="text" placeholder="为了方便我们更好的了解问题，请留下姓名与联系方式">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   联系方式：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="contact" id="contact" type="text" placeholder="为了方便我们更好的了解问题，请留下姓名与联系方式">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						  <font class="red"> * </font>内容：
+					    </label>
+					    <div class="col-sm-9">
+					    	<textarea class="form-control" name="content" id="content" rows="10" placeholder="内容（至少20字）"></textarea>
+					    </div>
+					 </div>
+				</div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+</form>
+<include file="./Application/Erp/View/Common/footer.html"/>

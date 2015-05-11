@@ -1,0 +1,197 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<script type="text/javascript" src="__PUBLIC__/assets/js/jsAddress.js"></script>
+<script type="text/javascript">
+function validate(){
+	var realname = $("#realname").val();
+	if(realname ==''){
+		alert("真实姓名不允许为空！");
+		return false;
+	}
+	document.form.submit();
+}
+</script>
+<div class="container" id="container" style="width: 100%;">
+<form action="{:U('Member/save')}" name="form" method="post" >
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>会员管理</h3>
+	    <p>查看和管理会员 </p>
+	  	</div>
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<input type="button" class="btn btn-primary" onclick="validate()" value="提交">
+			<a href="{:U('Member/index')}" class="btn btn-default"  >返回</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">添加会员
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>真实姓名：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="realname" id="realname" type="text" placeholder="真实姓名">
+					    </div>
+					 </div>
+					 <!-- <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   会员卡卡号：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="membercardid" id="membercardid" type="text" placeholder="会员卡卡号">
+					    </div>
+					 </div> -->
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   微信账号：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="wecha_account" id="wecha_account" type="text" placeholder="微信账号">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   微信名：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="wecha_name" id="wecha_name" type="text" placeholder="微信名">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						  QQ账号：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="qq" id="qq" type="text" placeholder="QQ账号">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						  E-mail：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="email" id="email" type="email" placeholder="E-mail">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   手机号：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="mobile" id="mobile" type="tel" placeholder="手机号">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   座机：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="phone" id="phone" type="tel" placeholder="座机">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   会员等级：
+					    </label>
+					    <div class="col-sm-9">
+					    	<select class="form-control" id="grade" name="grade">
+					    		<option value="1">普通会员</option>
+					    		<option value="2">金牌会员</option>
+					    		<option value="3">下级代理</option>
+					    	</select>
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   会员积分：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="credit" id="credit" type="text" placeholder="会员积分">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   生日：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="birthday" id="birthday" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" placeholder="生日">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   身份证号：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="cardid" id="cardid" type="text" placeholder="身份证号">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						   地区选择：
+					    </label>
+					    <div class="col-sm-9">
+						    <div class="form-inline">
+						    	省：<select class="form-control" id="Select1" name="prov_name"></select>
+								市：<select class="form-control" id="Select2" name="city_name"></select>
+								区：<select class="form-control" id="Select3" name="district_name"></select>
+						    </div>
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						 详细地址：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="address" id="address" type="text" placeholder="详细地址">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						 邮编：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="zipcode" id="zipcode" type="text" placeholder="邮编">
+					    </div>
+					 </div>
+					 
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						  会员状态：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input name="state" type="radio" value="1" checked="checked" />启用
+					    	<input name="state" type="radio" value="0" />禁用
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-12">
+					    <label class="col-sm-3 control-label text-right">
+						  会员简介：
+					    </label>
+					    <div class="col-sm-9">
+					    	<textarea class="form-control" name="Member_desc" id="Member_desc"  placeholder="会员简介"></textarea>
+					    </div>
+					 </div>
+				</div>
+            </div>
+          </div>
+        </div>
+      </div>
+</form>
+</div>
+<script type="text/javascript">
+	addressInit('Select1', 'Select2', 'Select3');
+</script>
+<include file="./Application/Erp/View/Common/footer.html"/>

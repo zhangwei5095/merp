@@ -1,0 +1,183 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<include file="./Application/Erp/View/Common/jqplot.html"/>
+<script type="text/javascript">
+$(function () {
+	var line1=[{$line}];
+	var line2=[{$line2}];
+	var act={$act};
+	if(act==1){
+		var formatstr = '%Y-%m-%#d';
+	}else{
+		var formatstr = '%Y-%#m';
+		
+	}
+	$.jqplot('chart1', [line2], {
+        title: "商品销售数量统计饼状图", //图表标题
+        seriesDefaults: {  
+            renderer: $.jqplot.PieRenderer, // 利用渲染器（BarRenderer）渲染现有图表  
+            pointLabels: { show: true },
+            rendererOptions: {
+            	diameter: undefined, //设置饼的直径
+            	padding: 10, //饼距离其分类名称框或者图表边框的距离，变相该表饼的直径
+            	sliceMargin: 5, //饼的每个部分之间的距离
+            	fill:true, //设置饼的每部分被填充的状态
+            	shadow:true, //为饼的每个部分的边框设置阴影，以突出其立体效果
+            	shadowOffset: 2, //设置阴影区域偏移出饼的每部分边框的距离
+            	shadowDepth: 5, //设置阴影区域的深度
+            	shadowAlpha: 0.07, //设置阴影区域的透明度
+            	showDataLabels: true
+           	}
+        }, 
+        legend: { 
+        	show:true, 
+        	location: 'e' 
+        },
+        cursor: {
+          show: false
+        } 
+    });
+    
+    $.jqplot('chart2', [line1], {
+        title: "商品销售数量统计柱状图", //图表标题
+        seriesDefaults: {  
+            renderer: $.jqplot.BarRenderer, // 利用渲染器（BarRenderer）渲染现有图表  
+            pointLabels: { show: true },
+            rendererOptions: {
+            	barPadding: 8, //设置同一分类两个柱状条之间的距离(px)
+            	barMargin: 10, //设置不同分类两个柱状条之间的距离(px)(同一个横坐标表点上)
+            	barDirection: 'vertical', //设置柱状图显示的方向：垂直显示和水平显示，默认垂直显示 vertical or horizontal.
+            	barWidth: 20, //设置柱状图中每个柱状条的宽度
+            	}
+        }, 
+        axes: {
+            xaxis:{
+            	label: "商品",
+            	show: true,    //是否自动显示坐标轴
+            	renderer: $.jqplot.CategoryAxisRenderer,
+            	showTicks: true,        // 是否显示刻度线以及坐标轴上的刻度值  
+            	showTickMarks: true,    //设置是否显示刻度
+            	tickOptions: {
+            	    show: true,
+            	    showLabel: true, //是否显示刻度线以及坐标轴上的刻度值
+            	    showMark: false,//设置是否显示刻度
+            	    showGridline: false // 是否在图表区域显示刻度值方向的网格
+                }
+              },
+              yaxis:{
+            	  label: "数量", 
+            	  min :{$min},
+            	  max :{$m},
+            	  renderer: $.jqplot.CategoryAxisRenderer,
+              	  showTicks: true,        // 是否显示刻度线以及坐标轴上的刻度值  
+              	  showTickMarks: true,    //设置是否显示刻度
+            	  tickOptions:{formatString:'%#d'}
+              }
+        } ,
+        highlighter: {
+            show: true ,
+            sizeAdjust: 5,
+            //tooltipAxes: 'y',
+            tooltipContentEditor:tooltipContentEditor
+         },
+        cursor: {
+          show: true
+        }
+    });
+});
+	
+function _submit(obj){
+	document.form.submit();
+}
+
+</script>
+<form action="{:U('Statistics/goods',array('op'=>$op))}" name="form" method="post" >
+<input type="hidden" name="act" id="act" value="{$act}">
+<input type="hidden" name="op" id="op" value="{$op}">
+<div class="container" id="container" style="width: 100%;">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>统计报表</h3>
+	    <p>统计销售、库存、财务等信息 </p>
+	  	</div>
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<a href="{:U('Statistics/index')}" class="btn btn-default"  >返回</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">商品销售数量统计
+              </h4>
+            </div>
+            <div class="panel-body">
+	            <div class="panel panel-default">
+					  <div class="panel-body">
+					    <div class="form-group col-sm-6">
+						    <label class="col-sm-3 control-label text-right">
+							   起始时间：
+						    </label>
+						    <div class="col-sm-9">
+						    	<input class="form-control" name="begintime" id="begintime" type="text" value="{$begintime}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endtime\')}'})" placeholder="起始时间">
+						    </div>
+					 	</div>
+					 	<div class="form-group col-sm-6">
+						    <label class="col-sm-3 control-label text-right">
+							   结束时间：
+						    </label>
+						    <div class="col-sm-9">
+						    	<input class="form-control" name="endtime" id="endtime" type="text" <if condition="$endtime eq ''">value="{$Think.NOW_TIME|date='Y-m-d',###}"<else/>value="{$endtime}"</if> onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'%y-%M-%d'})" placeholder="结束时间">
+						    </div>
+					 	</div>
+					 	<div class="form-group col-sm-12 text-center">
+						 	<input type="button" class="btn btn-primary" onclick="_submit()" value="统计">
+					 	</div>
+					 	<div class="form-group col-sm-12">
+		            		<ul id="myTab" class="nav nav-tabs">
+							   <li class="active"><a href="#statistics2" data-toggle="tab">柱状图</a></li>
+							   <li>
+							      <a href="#statistics3" data-toggle="tab">饼状图</a>
+							   </li>
+							</ul>
+							<div id="myTabContent" class="tab-content">
+							   		<table class="table table-striped table-hover">
+					                <thead>
+					                  <tr>
+					                  	<th>序号</th>
+						                <th>商品</th>
+						                <th>数量</th>
+					              	 </tr>
+					                </thead>
+					                <tbody>
+						                <volist name="OrderGoods" id="list" empty="暂时没有数据" key="k" >
+											<tr>
+												<td>{$k}</td>
+												<td>{$list.goods_name}</td>
+												<td>{$list.total}</td>
+											</tr> 
+										</volist>	
+					                </tbody>
+					              </table>
+							   <div class="tab-pane active" id="statistics2" >
+							      	<div id="chart2"style="width:100%;height:400px;" ></div>
+							   </div>
+							   <div class="tab-pane active" id="statistics3">
+							   		<div id="chart1"style="width:100%;height:400px;" ></div>
+							   </div>
+							</div>
+					   </div>
+					  </div>
+				 </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+</form>
+<include file="./Application/Erp/View/Common/footer.html"/>

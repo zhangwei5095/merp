@@ -1,0 +1,547 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<script>
+
+function changeMember(){
+	var mid = $("#mid").val();
+	var mobile = $("#mobile"+mid).val();
+	var realname = $("#realname"+mid).val();
+	var address = $("#address"+mid).val();
+	var zipcode = $("#zipcode"+mid).val();
+	
+	$("#zipcode").val(zipcode);
+	$("#consignee").val(realname);
+	$("#consignee_phone").val(mobile);
+	$("#delivery_address").val(address);
+}
+function validate(){
+	var order_no = $("#order_no").val();
+
+	if(order_no ==''){
+		alert("订单号不允许为空！");
+		return false;
+	}
+	document.form.submit();
+}
+</script>
+<div class="container" id="container" style="width: 100%;">
+<form action="{:U('Sales/save')}" name="form" method="post">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>订单管理</h3>
+	    <p>查看和管理商品订单 </p>
+	  	</div>
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<input type="button" class="btn btn-primary" onclick="validate()" value="提交">
+			<a href="{:U('Sales/index',array('pid'=>0))}" class="btn btn-default"  >返回</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">基本信息
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>订单号：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="order_no" id="order_no" type="text" value="{$Think.NOW_TIME}" >
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						 客户信息：
+					    </label>
+					    <div class="col-sm-9">
+					   	 	<select name="mid" id="mid" class="form-control" onchange="changeMember()">
+						   	 <volist name="Member" id="list" key="k" >
+					    		<option value="{$list.mid}">{$list.realname}</option>
+						   	 </volist>
+					    	</select>
+						   	 <volist name="Member" id="list" key="k" >
+					    		<input type="hidden" id="mid{$list['mid']}" value="{$list['mid']}">
+					    		<input type="hidden" id="realname{$list['mid']}" value="{$list['realname']}">
+					    		<input type="hidden" id="mobile{$list['mid']}" value="{$list['mobile']}">
+					    		<input type="hidden" id="address{$list['mid']}" value="{$list['prov_name']}{$list['city_name']}{$list['district_name']}{$list['address']}">
+					    		<input type="hidden" id="zipcode{$list['mid']}" value="{$list['zipcode']}">
+						   	 </volist>
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   下单时间：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="order_time" id="order_time" type="text" value="{$Think.NOW_TIME|date='Y-m-d',###}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="下单时间">
+					    </div>
+					 </div>
+ 					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   订单类型：
+					    </label>
+					    <div class="col-sm-9">
+					    	<select name="order_type" class="form-control">
+					    		<option value="1">零售</option>
+								<option value="2">代理</option>
+					    	</select>
+					    </div>
+					 </div>
+ 					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   订单状态：
+					    </label>
+					    <div class="col-sm-9">
+					    	<select name="order_status" class="form-control">
+					    		<option value="0">已确认</option>
+								<option value="1">已付款</option>
+								<option value="2">已发货</option>
+								<option value="3">已完成</option>
+								<option value="4">退货中</option>
+								<option value="5">已退货</option>
+					    	</select>
+					    </div>
+					 </div>
+				</div>
+            </div>
+          </div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">销售订单明细
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+				    <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						 出货数量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="num_total" id="num_total" type="text" value="0" placeholder="出货数量" readonly="readonly">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						 退货数量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="num_refund" id="num_refund" type="text" value="0" placeholder="退货数量">
+					    </div>
+					 </div>
+					 
+					<input name="goods_ids" id="goods_ids" type="hidden" value="">
+					<input name="amount_in_price" id="amount_in_price" type="hidden" value="">
+					 <div class="form-group col-sm-12">
+						<div class="alert alert-info alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<strong>说明</strong>：商品明细信息提交后<strong>无法修改</strong>
+						</div>
+					<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">选择商品</a>
+					</div>
+					
+					<div class="form-group col-sm-12">
+					<div class="table-responsive">
+		             	<table id="myTable" class="table table-striped table-hover">
+		                <thead>
+		                  	<tr>
+			                <th>商品条形码/代码</th>
+			                <th>商品名称</th>
+			                <th>所属分类</th>
+			                <th>进价(元)</th>
+			                <th>售价(元)</th>
+			                <th>市场价(元)</th>
+			                <th>库存</th>
+			                <th>库存总额(元)</th>
+			                <th>数量</th>
+			                <th>实际售价</th>
+			                <th>操作</th>
+		              		</tr>
+		                </thead>
+		              	</table>
+		              </div>
+		              </div>
+					<script type="text/javascript">
+					$(document).ready(function() {
+						//全选/取消全选
+						$("#chk_all").click(function(){
+						$("input[name='chk_list']").prop("checked", this.checked);
+						});
+						 $("input[name='chk_list']").click(function() {
+						    var $subs = $("input[name='chk_list']");
+						    $("#chk_all").prop("checked" , $subs.length == $subs.filter(":checked").length ? true :false);
+				  		});
+			  		});
+					//获取被选中的checkbox的值
+					function getCheckedValue(){
+						var chk_list = document.getElementsByName('chk_list');
+						var chkString = "";
+						for(var i=0;i<chk_list.length;i++){
+							if(chk_list[i].checked){
+								 chkString =chk_list[i].value+","+chkString;
+							}
+						}
+						return chkString.substring(0,chkString.length-1);
+					}
+					function getCheckedGoods(){
+						$("#goods_ids").val(getCheckedValue());
+						var Checkeds = getCheckedValue().split(",");
+						var Str = "";
+						var stockTotal = 0;
+						var outPriceTotal = 0;
+						for(var i=0;i<Checkeds.length;i++){
+							var trId = "tr"+Checkeds[i];
+							var stockId = "stock"+Checkeds[i];
+							var stock = $("#"+stockId).val();
+							var out_priceId = "out_price"+Checkeds[i];
+							var out_price = $("#"+out_priceId).val();
+							var in_priceId = "in_price"+Checkeds[i];
+							var in_price = $("#"+in_priceId).val();
+							stockTotal = stockTotal + parseFloat(stock);
+							outPriceTotal = outPriceTotal + parseFloat(out_price)*parseFloat(stock);
+							var trHtml = $("#"+trId).html();
+							//截取掉无用字段
+							trHtml = trHtml.substring(trHtml.indexOf("</td>")+5);
+							trHtml = trHtml.substring(0,trHtml.lastIndexOf("<td>"));
+							trHtml = trHtml + '<td><input class="form-control deliveredNum" style="width:60px;" name="deliveredNum'+Checkeds[i]+'" id="deliveredNum'+Checkeds[i]+'" onchange="changeNum(this)" type="text" value="'+stock+'" placeholder="数量"></td>';
+							trHtml = trHtml + '<td><input class="form-control outPrice" style="width:80px;" name="outPrice'+Checkeds[i]+'" id="outPrice'+Checkeds[i]+'" onchange="changePrice(this)" type="text" value="'+out_price+'" placeholder="数量"></td>';
+							trHtml = trHtml + '<input class="inPrice"  name="inPrice'+Checkeds[i]+'" id="inPrice'+Checkeds[i]+'" type="hidden" value="'+in_price+'"></td>';
+							trHtml = trHtml + "<td><a href=\"#\" onclick=\"delTr(this,'"+Checkeds[i]+"');return false;\" class=\"btn btn-sm btn-danger delBtn\"  >删除</a></td>";
+							Str = Str + "<tr>" + trHtml + "</tr>";
+						}
+						$("#myTable").append(Str); 
+						$("#num_total").val(stockTotal);
+						$("#num_delivered").val(stockTotal);
+						$("#amount_total").val(outPriceTotal.toFixed(2));
+						changePrice()
+						//changeTotalPrice();
+						//隐藏模态框
+						$('#myModal').modal('hide')
+						//取消复选框
+						$("input[name='chk_list']").each(function(i){ 
+							$(this).prop("checked",false);
+						});
+						$("#chk_all").prop("checked",false);
+					}
+					
+					function delTr(obj,goodsid){
+						var goods_ids = $("#goods_ids").val();
+						goods_ids = goods_ids.replace(goodsid,"");
+						goods_ids = goods_ids.replace(",,",",");
+						$(obj).parent().parent().remove(); 
+						if(goods_ids==","){
+							goods_ids = "";
+							alert("至少选择一个商品！");
+						}
+						changeTotalNum();
+						$("#goods_ids").val(goods_ids);
+					}
+					//校验数量不超过库存
+					function changeNum(obj){
+						var id = obj.id;
+						var value = parseFloat(obj.value);
+						var goodsId = id.replace("deliveredNum","");
+						var stockId = "stock"+goodsId;
+						var stockNum = $("#"+stockId).val();
+						if(value>parseFloat(stockNum)){
+							alert("商品数量不能超过库存数量！");
+							$(obj).val(stockNum);
+						}
+						changeTotalNum();
+					}
+					
+					function changeTotalNum(){
+						var stockTotal = 0;
+						$(".deliveredNum").each(function(i){ 
+							if($(this).val()!=""){
+								stockTotal = stockTotal + parseFloat($(this).val());
+							}
+						});
+						$("#num_total").val(stockTotal);
+						$("#num_delivered").val(stockTotal);
+						changePrice();
+					}
+					//更改amount_total的值
+					function changePrice(){
+						var outPriceTotal = 0;
+						$(".outPrice").each(function(i){ 
+							if($(this).val()!=""){
+								var id = $(this).attr("id");
+								var goodsId = id.replace("outPrice","");
+								var stockId = "deliveredNum"+goodsId;
+								var stockNum = $("#"+stockId).val();
+								outPriceTotal = outPriceTotal + parseFloat($(this).val()*parseInt(stockNum));
+							}
+						});
+						$("#amount_total").val(outPriceTotal.toFixed(2));
+						
+						var inPriceTotal = 0;
+						$(".inPrice").each(function(i){ 
+							if($(this).val()!=""){
+								var id = $(this).attr("id");
+								var goodsId = id.replace("inPrice","");
+								var stockId = "deliveredNum"+goodsId;
+								var stockNum = $("#"+stockId).val();
+								inPriceTotal = inPriceTotal + parseFloat($(this).val()*parseInt(stockNum));
+							}
+						});
+						$("#amount_in_price").val(inPriceTotal.toFixed(2));
+						changeTotalPrice();
+					}
+					//更改amount_payed的值
+					function changeTotalPrice(){
+						var amount_total = $("#amount_total").val();
+						var amount_freight = $("#amount_freight").val();
+						if(amount_freight!=null&&amount_freight!=''){
+							amount_freight = parseFloat(amount_freight);
+						}else{
+							amount_freight = 0;
+						}
+						$("#amount_payed").val((amount_freight + parseFloat(amount_total)).toFixed(2));
+					}
+					</script>
+					
+					<!-- 模态框（Modal） -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					   <div class="modal-dialog" style="width: 70%;">
+					      <div class="modal-content">
+					         <div class="modal-header">
+					            <a type="button" data-dismiss="modal" aria-hidden="true" href="#" style="float: right">×
+					            </a>
+					            <h4 class="modal-title" id="myModalLabel" >
+					               	选择商品
+					            </h4>
+					         </div>
+					         <div class="modal-body">
+					         	<div class="alert alert-danger alert-dismissible" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<strong>说明</strong>：库存为 <strong>0</strong> 的商品<strong>无法显示</strong>
+								</div>
+					           	<div class="table-responsive">
+				             	<table class="table table-striped table-hover">
+				                <thead>
+				                  <tr>
+					                <th>序号</th>
+					                <th>商品条形码/代码</th>
+					                <th>商品名称</th>
+					                <th>所属分类</th>
+					                <th>进价(元)</th>
+					                <th>售价(元)</th>
+					                <th>市场价(元)</th>
+					                <th>库存</th>
+					                <th>库存总额(元)</th>
+					                <th><input type="checkbox" name="chk_all" id="chk_all" /></th>
+				              </tr>
+				                </thead>
+				                <tbody>
+					                <volist name="Goods" id="list" empty="暂时没有数据" key="k">
+										<tr id="tr{$list['goods_id']}">
+											<td>{$k}
+												<input id="stock{$list['goods_id']}" type="hidden" value="{$list['stock']}">
+												<input id="out_price{$list['goods_id']}" type="hidden" value="{$list['out_price']}">
+												<input id="in_price{$list['goods_id']}" type="hidden" value="{$list['in_price']}">
+												</td>
+											<td>{$list.goods_sn}</td>
+											<td>{$list.goods_name}</td>
+											<td>{$list.cat_name}</td>
+											<td>{$list.in_price}</td>
+											<td>{$list.out_price}</td>
+											<td>{$list.market_price}</td>
+											<td>
+												<if condition="$list['stock'] gt $list['warn_stock']">{$list['stock']}<else /><code>{$list['stock']}(缺)</code></if>
+											</td>
+											<td>{$list['in_price'] * $list['stock']}</td>
+											<td>
+											<if condition="$list['stock'] eq 0">
+												<input type="checkbox" name="chk_list0" id="chk_list0_{$k}" value="{$list['goods_id']}" disabled/>
+											<else/>
+												<input type="checkbox" name="chk_list" id="chk_list_{$k}" value="{$list['goods_id']}" />
+											</if>
+											</td>
+										</tr> 
+									</volist>	
+				                </tbody>
+				              </table>
+				              </div>
+					         </div>
+					         <div class="modal-footer">
+					            <button type="button" class="btn btn-default" 
+					               data-dismiss="modal">关闭
+					            </button>
+					            <button type="button" class="btn btn-primary" onclick="getCheckedGoods()">
+					              	 提交
+					            </button>
+					         </div>
+					      </div><!-- /.modal-content -->
+						</div><!-- /.modal -->
+					 </div>
+            </div>
+          </div>
+        </div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">金额信息
+              <a href="#" onclick="resetLogistics('amount');return false;" style="float: right" >清空</a>
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   付款状态：
+					    </label>
+					    <div class="col-sm-9">
+					    	<select name="pay_status" class="form-control">
+								<option value="3">已付款</option>
+								<option value="1">未付款</option>
+								<option value="2">部分付款</option>
+								<option value="4">部分退款</option>
+								<option value="5">完全退款</option>
+					    	</select>
+					    </div>
+					 </div>
+ 					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   支付方式：
+					    </label>
+					    <div class="col-sm-9">
+					    	<select name="pay_type" class="form-control">
+								<option value="2">支付宝</option>
+								<option value="1">银行转账</option>
+								<option value="3">微信支付</option>
+								<option value="4">理财通支付</option>
+								<option value="5">其他</option>
+					    	</select>
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						运费金额：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control amount" name="amount_freight" id="amount_freight" type="text" value=""  onchange="changeTotalPrice()" placeholder="卖家承担运费为-10；买家承担运费为0">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						商品金额：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control amount" name="amount_total" id="amount_total" type="text" value="0" onchange="changeTotalPrice()" placeholder="商品金额">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						已支付额：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control amount" name="amount_payed" id="amount_payed" type="text" value="10" placeholder="已支付额">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						已退款额：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control amount" name="amount_refund" id="amount_refund" type="text" value="0" placeholder="已退款额">
+					    </div>
+					 </div>
+				</div>
+            </div>
+          </div>
+          <script type="text/javascript">
+          
+          function resetLogistics(className){
+        	  $("."+className).val("");
+          }
+          
+          </script>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">物流信息
+              <a href="#" onclick="resetLogistics('logistics');return false;" style="float: right" >清空</a>
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						物流单号：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="logistics_no" id="logistics_no" type="text" value="" placeholder="物流单号">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						物流公司：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="logistics_company" id="logistics_company" type="text" value="" placeholder="物流公司">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						邮编：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="zipcode" id="zipcode" type="text" value="{$Member[0]['zipcode']}" placeholder="邮编">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						收货人：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="consignee" id="consignee" type="text" value="{$Member[0]['realname']}" placeholder="收货人">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						收货电话：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="consignee_phone" id="consignee_phone" type="text" value="{$Member[0].mobile}" placeholder="收货电话">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						收货地址：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="delivery_address" id="delivery_address" type="text" value="{$Member[0]['prov_name']}{$Member[0]['city_name']}{$Member[0]['district_name']}{$Member[0]['address']}" placeholder="收货地址">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						物品重量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="weight" id="weight" type="text" value="" placeholder="物品重量（kg）">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						 已发货数量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="num_delivered" id="num_delivered" type="text" value="0" placeholder="已发货数量">
+					    </div>
+					 </div>
+				</div>
+            </div>
+          </div>
+      </div>
+</form>
+</div>
+<include file="./Application/Erp/View/Common/footer.html"/>

@@ -1,0 +1,73 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<div class="container" id="container" style="width: 100%;">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>统计报表</h3>
+	    <p>统计销售、库存、财务等信息 </p>
+	  	</div>
+	</div>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">统计报表
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="col-sm-6">
+		            <div class="panel panel-default">
+		              <div class="panel-heading">销售统计</div>
+					  <div class="panel-body">
+					  	<a href="{:U('Statistics/sales',array('op'=>'salesnum','act'=>1))}" class="btn btn-primary btn-lg">销售数量统计</a><!-- 折线图   时间轴-->
+		            	<a href="{:U('Statistics/sales',array('op'=>'salesamount','act'=>1))}" class="btn btn-primary btn-lg">销售金额统计</a><!-- 折线图   时间轴 -->
+		            	<a href="{:U('Statistics/sales',array('op'=>'salesprofit','act'=>1))}" class="btn btn-primary btn-lg">销售利润统计</a><!-- 折线图   时间轴 -->
+					  </div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+		            <div class="panel panel-default">
+		              <div class="panel-heading">会员统计</div>
+					  <div class="panel-body">
+		            	<a href="{:U('Statistics/consume',array('op'=>'consumenum','act'=>1))}" class="btn btn-primary btn-lg">消费数量统计</a><!-- 折线图   时间轴 -->
+		            	<a href="{:U('Statistics/consume',array('op'=>'consumeamount','act'=>1))}" class="btn btn-primary btn-lg">消费金额统计</a><!-- 折线图   时间轴 -->
+		            	<a href="{:U('Statistics/consume',array('op'=>'consumeprofit','act'=>1))}" class="btn btn-primary btn-lg">消费利润统计</a><!-- 折线图   时间轴 -->
+					  </div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+		            <div class="panel panel-default">
+		              <div class="panel-heading">商品统计</div>
+					  <div class="panel-body">
+		            	<a href="{:U('Statistics/goods',array('op'=>'goodsnum','act'=>1))}" class="btn btn-primary btn-lg">销售数量统计</a><!-- 折线图   时间轴 -->
+		            	<a href="{:U('Statistics/goods',array('op'=>'goodsamount','act'=>1))}" class="btn btn-primary btn-lg">销售金额统计</a><!-- 折线图   时间轴 -->
+		            	<a href="{:U('Statistics/goods',array('op'=>'goodsprofit','act'=>1))}" class="btn btn-primary btn-lg">销售利润统计</a><!-- 折线图   时间轴 -->
+					  </div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+		            <div class="panel panel-default">
+		              <div class="panel-heading">采购统计</div>
+					  <div class="panel-body">
+		            	<a href="{:U('Statistics/purchase',array('op'=>'purchasenum','act'=>1))}" class="btn btn-primary btn-lg">采购数量统计</a>
+		            	<a href="{:U('Statistics/purchase',array('op'=>'purchaseamount','act'=>1))}" class="btn btn-primary btn-lg">采购金额统计</a>
+					  </div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+		            <div class="panel panel-default">
+		              <div class="panel-heading">退货统计</div>
+					  <div class="panel-body">
+		            	<a href="{:U('Statistics/sales',array('op'=>'refundnum','act'=>1))}" class="btn btn-primary btn-lg">退货数量统计</a>
+		            	<a href="{:U('Statistics/sales',array('op'=>'refundamount','act'=>1))}" class="btn btn-primary btn-lg">退货金额统计</a>
+					  </div>
+					</div>
+				</div>
+            	
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+<include file="./Application/Erp/View/Common/footer.html"/>

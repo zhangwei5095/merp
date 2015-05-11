@@ -1,0 +1,103 @@
+    
+    	<div class="col-md-2 col-sm-3 col-xs-4 text-right" id="silde" style="background-color: #4B4B4B;font-weight: bold;min-height: 650px;color: white;font-size: 15px;">
+	    	<div class="page-header">
+			  <h3>
+			  <strong>ERP系统</strong>
+			  <br>
+			  <small style="color: white;">您好, 
+			  <a href="{:U('Account/edit',array('admin_id'=>$_SESSION['admin_id']))}" title="编辑资料">{$Think.session.admin_realname}</a>
+			  </small>
+			  </h3>
+			  <br>
+		      <a href="{:U('Account/editpwd',array('admin_id'=>$_SESSION['admin_id']))}" class="btn btn-primary" title="修改密码">修改密码</a>
+		      <a href="{:U('Login/logout')}" class="btn btn-primary" title="退出系统">退出系统</a>
+			</div>
+	    	<ul class="nav nav-pills nav-stacked " id="slide">
+			  <li role="presentation" <if condition="$currentname eq 'Home'">class="active"</if>><a href="{:U('Home/index')}">首页</a></li>
+			  <li role="presentation" <if condition="$currentname eq 'Member'">class="active"</if>><a href="{:U('Member/index')}">会员管理</a></li>
+			  <li role="presentation" <if condition="$currentname eq 'Category'">class="active"</if> ><a href="{:U('Category/index')}">分类管理</a></li>
+			  <li role="presentation" <if condition="$currentname eq 'Goods'">class="active"</if>><a href="{:U('Goods/index')}">商品管理</a></li>
+			  <li role="presentation" <if condition="$currentname eq 'Purchase'">class="active"</if>><a href="{:U('Purchase/index')}">采购管理</a></li>
+			  <li role="presentation" <if condition="$currentname eq 'Sales'">class="active"</if>><a href="{:U('Sales/index')}">订单管理</a></li>
+			  <!-- <li role="presentation" class="dropdown">
+			    <a class="dropdown-toggle" id="dLabel" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+			    <span class="caret"></span>
+			      	订单管理 
+			    </a>
+			    <ul class="dropdown-menu text-right" role="menu" aria-labelledby="dLabel" style="width:100%">
+			    	<li role="presentation" class="text-right"><a href="{:U('Sales/index')}">销售列表</a></li>
+			    	<li role="presentation" class="text-right"><a href="{:U('Sales/out')}">商品出库</a></li>
+			    	<li role="presentation" class="text-right"><a href="{:U('Sales/return')}">商品退货</a></li>
+			    </ul>
+			  </li> -->
+			  <li role="presentation" <if condition="$currentname eq 'Statistics'">class="active"</if>><a href="{:U('Statistics/index')}">统计管理</a></li>
+			  <if condition="$_SESSION['admin_gid'] eq 1">
+				  <li role="presentation" <if condition="$currentname eq 'Account'">class="active"</if>><a href="{:U('Account/index')}">管理员管理</a></li>
+			  </if>
+			</ul>
+    	
+    	
+        </div>
+        <div class="col-md-10 col-sm-9 col-xs-8">
+         
+
+
+
+
+
+
+<!-- <div id="sidebar">
+  <div id="sidebar-wrapper">
+    <h1 id="sidebar-title"><a href="./">{$head_title}</a></h1>
+    <a href="./"><img id="logo" src="__PUBLIC__/assets/simpla/images/logo.png" alt="{$head_title}" /></a> 
+    Sidebar Profile links
+    <div id="profile-links"> 您好, <a href="#" title="编辑资料">{$Think.session.admin_name}</a><br />
+      <br />
+      <a href="{:U('Home/index')}" title="管理首页">管理首页</a> | <a href="{:U('Login/logout')}" title="退出系统">退出系统</a> </div>
+    <ul id="main-nav">
+      <li> <a href="javascript:;" class="nav-top-item {/if $inpath[1] eq "category"/}current{//if/}">分类管理</a>
+        <ul>
+            <li><a href="{:U('Category/index')}" class="{/if $inpath[2] eq $k/}current{//if/}">分类管理</a></li>
+            <li><a href="{:U('Category/add')}" class="{/if $inpath[2] eq $k/}current{//if/}">添加分类</a></li>
+        </ul>
+      </li>
+      <li> <a href="javascript:;" class="nav-top-item {/if $inpath[1] eq "goods"/}current{//if/}">商品管理</a>
+        <ul>
+            <li><a href="{:U('Goods/index')}" class="{/if $inpath[2] eq $k/}current{//if/}">商品管理</a></li>
+            <li><a href="{:U('Goods/add')}" class="{/if $inpath[2] eq $k/}current{//if/}">添加商品</a></li>
+        </ul>
+      </li>
+      <li> <a href="javascript:;" class="nav-top-item {/if $inpath[1] eq "purchase"/}current{//if/}">采购管理</a>
+        <ul>
+            <li><a href="{:U('Purchase/index')}" class="{/if $inpath[2] eq $k/}current{//if/}">库存管理</a></li>
+            <li><a href="{:U('Purchase/add')}" class="{/if $inpath[2] eq $k/}current{//if/}">添加库存</a></li>
+        </ul>
+      </li>
+      <li> <a href="javascript:;" class="nav-top-item {/if $inpath[1] eq "sales"/}current{//if/}">订单管理</a>
+        <ul>
+        	<li><a href="{:U('Sales/index')}" class="{/if $inpath[2] eq $k/}current{//if/}">销售列表</a></li>
+            <li><a href="{:U('Sales/out')}" class="{/if $inpath[2] eq $k/}current{//if/}">商品出库</a></li>
+            <li><a href="{:U('Sales/return')}" class="{/if $inpath[2] eq $k/}current{//if/}">商品退货</a></li>
+        </ul>
+      </li>
+      <li> <a href="javascript:;" class="nav-top-item {/if $inpath[1] eq "statistics"/}current{//if/}">统计管理</a>
+        <ul>
+            <li><a href="{:U('statistics/sales')}" class="{/if $inpath[2] eq $k/}current{//if/}">销售统计</a></li>
+        </ul>
+      </li>
+      <li> <a href="javascript:;" class="nav-top-item {/if $inpath[1] eq "account"/}current{//if/}">帐号管理</a>
+        <ul>
+        	<li><a href="{:U('Account/index')}" class="{/if $inpath[2] eq $k/}current{//if/}">帐号管理</a></li>
+            <li><a href="{:U('Account/add')}" class="{/if $inpath[2] eq $k/}current{//if/}">添加账号</a></li>
+            <li><a href="{:U('Account/resetpwd')}" class="{/if $inpath[2] eq $k/}current{//if/}">密码修改</a></li>
+        </ul>
+      </li>
+      <li> <a href="javascript:;" class="nav-top-item {/if $inpath[1] eq "member"/}current{//if/}">会员管理</a>
+        <ul>
+        	<li><a href="{:U('Member/index')}" class="{/if $inpath[2] eq $k/}current{//if/}">帐号管理</a></li>
+            <li><a href="{:U('Member/add')}" class="{/if $inpath[2] eq $k/}current{//if/}">添加账号</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div> -->

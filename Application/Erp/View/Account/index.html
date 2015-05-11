@@ -1,0 +1,78 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<div class="container" id="container" style="width: 100%;">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>管理员管理</h3>
+	    <p>查看和管理管理员 </p>
+	  	</div>
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<a href="{:U('Account/add')}" class="btn btn-primary"  >新增</a>
+			<a href="{:U('Account/index')}" class="btn btn-default"  >刷新</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">管理员管理
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="table-responsive">
+             	<table class="table table-striped table-hover table-condensed">
+                <thead>
+                  <tr>
+                    <th>序号</th>
+	                <th>账号</th>
+	                <th>姓名</th>
+	                <th>手机号</th>
+	                <th>角色</th>
+	                <th>最后登录时间</th>
+	                <th>创建时间</th>
+	                <th>状态</th>
+	                <th>操作</th>
+              	   </tr>
+                </thead>
+                <tbody>
+	                <volist name="Account" id="list" empty="暂时没有数据" key="k">
+						<tr>
+							<td>{$k}</td>
+							<td>{$list.admin_name}</td>
+							<td>{$list.admin_realname}</td>
+							<td>{$list.phone}</td>
+							<td><if condition="$list['gid'] eq 1 ">超级管理员<else/>普通管理员</if></td>
+							<td>{$list.lastlogintime|date='Y-m-d H:i:s',###}</td>
+							<td>{$list.createtime|date='Y-m-d',###}</td>
+							<td><if condition="$list['state'] eq 1 "><font class="green"> 启用 </font><else/><font class="red"> 停用 </font></if></td>
+							<td>
+							<a href="{:U('Account/edit',array('admin_id'=>$list['admin_id']))}" class="btn btn-sm btn-primary"  >编辑</a>
+							<if condition="$list['state'] eq 1 ">
+								<a href="{:U('Account/status',array('admin_id'=>$list['admin_id'],'status'=>0))}" class="btn btn-sm btn-default">停用</a>
+							<else/>
+								<a href="{:U('Account/status',array('admin_id'=>$list['admin_id'],'status'=>1))}" class="btn btn-sm btn-default">启用</a>
+							</if>
+							<if condition="$list['admin_name'] neq 'admin' ">
+							<a href="{:U('Account/delete',array('admin_id'=>$list['admin_id']))}" onclick="return(confirm('确认删除管理员?'))" class="btn btn-sm btn-danger" title="确认删除管理员" >删除</a>
+							<else/>
+							<a href="#" onclick="return(alert('系统管理员不允许删除'))" class="btn btn-sm btn-default" >删除</a>
+							</if>
+							</td>
+						</tr> 
+					</volist>	
+                </tbody>
+              </table>
+              <div class="sabrosus">{$page}</div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+<include file="./Application/Erp/View/Common/footer.html"/>

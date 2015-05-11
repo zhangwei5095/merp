@@ -1,0 +1,91 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<div class="container" id="container" style="width: 100%;">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>会员管理</h3>
+	    <p>查看和管理会员 </p>
+	  	</div>
+	</div>
+	<div class="alert alert-warning alert-dismissible" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<strong>购物流程</strong>：创建分类信息->创建商品信息->创建采购信息---><strong>创建买家会员信息</strong>->创建订单信息
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<if condition="$_SESSION['admin_gid'] eq 1">
+			<a href="{:U('Member/add')}" class="btn btn-primary"  >新增</a>
+			</if>
+			<a href="{:U('Member/index')}" class="btn btn-default"  >刷新</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">会员管理
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="table-responsive">
+             	<table class="table table-striped table-hover table-condensed">
+                <thead>
+                  <tr>
+                    <th>序号</th>
+	                <th>会员姓名</th>
+	                <th>微信号（微信名）</th>
+	                <th>QQ</th>
+	                <th>会员等级</th>
+	                <th>会员积分</th>
+	                <th>手机号</th>
+	                <th>地区</th>
+	                <th>生日</th>
+	                <th>状态</th>
+	                <th>操作</th>
+              	   </tr>
+                </thead>
+                <tbody>
+	                <volist name="Member" id="list" empty="暂时没有数据" key="k">
+						<tr>
+							<td>{$k}</td>
+							<td>{$list.realname}</td>
+							<td>{$list.wecha_account}<if condition="$list['wecha_name'] neq ''">({$list.wecha_name})</if></td>
+							<td>{$list.qq}</td>
+							<td>
+								<if condition="$list['grade'] eq 1">普通会员</if>
+								<if condition="$list['grade'] eq 2">金牌会员</if>
+								<if condition="$list['grade'] eq 3">下级代理</if>
+							</td>
+							<td>{$list.credit}</td>
+							<td>{$list.mobile}</td>
+							<td>{$list.prov_name}-{$list.city_name}-{$list.district_name}</td>
+							<td>{$list.birthday}</td>
+							<td><if condition="$list['state'] eq 1 "><font class="green"> 启用 </font><else/><font class="red"> 停用 </font></if></td>
+							<td>
+								<a href="{:U('Member/edit',array('mid'=>$list['mid']))}" class="btn btn-sm btn-primary"  >查看</a>
+								<if condition="$_SESSION['admin_gid'] eq 1">
+									<a href="{:U('Member/edit',array('mid'=>$list['mid']))}" class="btn btn-sm btn-primary"  >编辑</a>
+									<if condition="$list['state'] eq 1 ">
+										<a href="{:U('Member/status',array('mid'=>$list['mid'],'status'=>0))}" class="btn btn-sm btn-default">停用</a>
+									<else/>
+										<a href="{:U('Member/status',array('mid'=>$list['mid'],'status'=>1))}" class="btn btn-sm btn-default">启用</a>
+									</if>
+									<a href="{:U('Member/delete',array('mid'=>$list['mid']))}" onclick="return(confirm('只有会员录入错误时才使用，你确认会员录入错误?'))" class="btn btn-sm btn-danger" title="只有会员录入错误时才使用，你确认会员录入错误" >删除</a>
+								</if>
+							</td>
+						</tr> 
+					</volist>	
+                </tbody>
+              </table>
+              <div class="sabrosus">{$page}</div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+<include file="./Application/Erp/View/Common/footer.html"/>

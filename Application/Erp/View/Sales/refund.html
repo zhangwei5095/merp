@@ -1,0 +1,347 @@
+<include file="./Application/Erp/View/Common/header.html"/>
+<include file="./Application/Erp/View/Common/left.html"/>
+<div class="container" id="container" style="width: 100%;">
+<form action="{:U('Sales/saverefund')}" name="form" method="post">
+<input type="hidden" name="order_id" value="{$Order['order_id']}">
+	<div class="row">
+		<div class="bs-callout bs-callout-info" id="callout-tables-responsive-overflow">
+		<h3>订单管理</h3>
+	    <p>查看和管理商品订单 </p>
+	    <p>退货 </p>
+	  	</div>
+	</div>
+	<div class="row">
+	 	<div class="col-xs-6">
+		</div>
+		<div class="col-xs-6" style="text-align: right">
+			<input type="submit" class="btn btn-primary" value="提交">
+			<a href="{:U('Sales/index',array('pid'=>0))}" class="btn btn-default"  >返回</a>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">基本信息
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   <font class="red"> * </font>订单号：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="order_no" id="order_no" type="text" value="{$Order['order_no']}" disabled="disabled">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						 客户信息：
+					    </label>
+					    <div class="col-sm-9">
+					   	 	<select name="mid" class="form-control" disabled="disabled">
+						   	 <volist name="Member" id="list" key="k" >
+					    		<option value="{$list.mid}" <if condition="$list['mid'] eq $Order['mid']">selected="selected"</if>>{$list.realname}</option>
+						   	 </volist>
+					    	</select>
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   下单时间：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="order_time" id="order_time" type="text" value="{$Order['order_time']|date='Y-m-d',###}"  disabled="disabled" placeholder="下单时间">
+					    </div>
+					 </div>
+ 					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   订单类型：
+					    </label>
+					    <div class="col-sm-9">
+					    	<select name="order_type" class="form-control" disabled="disabled">
+					    		<option value="1" <if condition="$Order['order_type'] eq 1">selected="selected"</if>>零售</option>
+								<option value="2" <if condition="$Order['order_type'] eq 2">selected="selected"</if>>代理</option>
+					    	</select>
+					    </div>
+					 </div>
+ 					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   订单状态：
+					    </label>
+					    <div class="col-sm-9">
+					    	<select name="order_status" class="form-control">
+								<option value="4">退货中</option>
+								<option value="5">已退货</option>
+					    	</select>
+					    </div>
+					 </div>
+				</div>
+            </div>
+          </div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">销售订单明细
+              <!-- <span class="badge">1</span> -->
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+					    <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						 出货数量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="num_total" id="num_total" type="text" value="{$Order['num_total']}" placeholder="出货数量" readonly="readonly">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						 退货数量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control" name="num_refund" id="num_refund" type="text" value="{$Order['num_refund']}" placeholder="退货数量" readonly="readonly">
+					    </div>
+					 </div>
+					 
+					<input name="goods_ids" id="goods_ids" type="hidden" value="{$goods_ids}">
+					 
+					<div class="form-group col-sm-12">
+					<div class="table-responsive">
+		             	<table id="myTable" class="table table-striped table-hover">
+		                <thead>
+		                  	<tr>
+			                <th>商品条形码/代码</th>
+			                <th>商品名称</th>
+			                <th>所属分类</th>
+			                <th>售价(元)</th>
+			                <th>市场价(元)</th>
+			                <th>当前库存</th>
+			                <th>库存总额(元)</th>
+			                <th>数量</th>
+			                <th>实际售价</th>
+			                <th>退货数量</th>
+		              		</tr>
+		                </thead>
+		                <volist name="OrderGoods" id="list" empty="暂时没有数据" key="k">
+							<tr id="tr{$list['goods_id']}">
+								<td>{$list.goods_sn}
+								<input id="num{$list['goods_id']}" type="hidden" value="{$list['num']}">
+								<input class="price" id="price{$list['goods_id']}" name="outPrice{$list['goods_id']}" type="hidden" value="{$list['price']}">
+								<input name="deliveredNum{$list['goods_id']}" type="hidden" value="{$list['num']}">
+								</td>
+								<td>{$list.goods_name}</td>
+								<td>{$list.cat_name}</td>
+								<td>{$list.out_price}</td>
+								<td>{$list.market_price}</td>
+								<td>
+									<if condition="$list['stock'] gt $list['warn_stock']">{$list['stock']}<else /><code>{$list['stock']}(缺)</code></if>
+								</td>
+								<td>{$list['in_price'] * $list['stock']}</td>
+								<td>{$list['num']}</td>
+								<td>{$list['price']}</td>
+								<td>
+									<input class="form-control refundNum" name="num_refund{$list['goods_id']}" id="num_refund{$list['goods_id']}" onchange="changeRefundNum(this,{$list['goods_id']})" type="text" value='<if condition="$list['num_refund'] gt 0">{$list['num_refund']}<else />0</if>' placeholder="退货数量" style="width: 60px;">
+								</td>
+							</tr> 
+						</volist>
+		              	</table>
+	              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript">
+        function changeRefundNum(obj,goodsId){
+        	var value = parseInt(obj.value);
+        	var id = obj.id;
+			var numId = "num"+goodsId;
+			var numValue = $("#"+numId).val();
+			if(value>parseInt(numValue)){
+				alert("退货数量不能超过出货数量！");
+				$(obj).val(numValue);
+			}
+			changeTotalNum();
+        }
+        function changeTotalNum(){
+			var stockTotal = 0;
+			$(".refundNum").each(function(i){ 
+				if($(this).val()!=""){
+					stockTotal = stockTotal + parseFloat($(this).val());
+				}
+			});
+			$("#num_refund").val(stockTotal);
+			changePrice();
+		}
+      //更改amount_refund的值
+		function changePrice(){
+			var outPriceTotal = 0;
+			$(".price").each(function(i){ 
+				if($(this).val()!=""){
+					var id = $(this).attr("id");
+					var goodsId = id.replace("price","");
+					var numId = "num_refund"+goodsId;
+					var numValue = $("#"+numId).val();
+					outPriceTotal = outPriceTotal + parseFloat($(this).val()*parseInt(numValue));
+				}
+			});
+			$("#amount_refund").val(outPriceTotal.toFixed(2));
+		}
+        </script>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">金额信息
+              <a href="#" onclick="resetLogistics('amount');return false;" style="float: right" >清空</a>
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   付款状态：
+					    </label>
+					    <div class="col-sm-9">
+					    	<select name="pay_status" class="form-control">
+								<option value="4" >部分退款</option>
+								<option value="5" >完全退款</option>
+					    	</select>
+					    </div>
+					 </div>
+ 					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						   支付方式：
+					    </label>
+					    <div class="col-sm-9">
+					    	<select name="pay_type" class="form-control" disabled="disabled">
+								<option value="1" <if condition="$Order['pay_type'] eq 1">selected="selected"</if>>银行转账</option>
+								<option value="2" <if condition="$Order['pay_type'] eq 2">selected="selected"</if>>支付宝</option>
+								<option value="3" <if condition="$Order['pay_type'] eq 3">selected="selected"</if>>微信支付</option>
+								<option value="4" <if condition="$Order['pay_type'] eq 4">selected="selected"</if>>理财通支付</option>
+								<option value="5" <if condition="$Order['pay_type'] eq 5">selected="selected"</if>>其他</option>
+					    	</select>
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						运费金额：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control amount" name="amount_freight" id="amount_freight" type="text" disabled="disabled" value="{$Order['amount_freight']}" placeholder="运费金额">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						商品金额：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control amount" name="amount_total" id="amount_total" type="text" disabled="disabled" value="{$Order['amount_total']}" placeholder="商品金额">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						已支付额：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control amount" name="amount_payed" id="amount_payed" type="text" disabled="disabled" value="{$Order['amount_payed']}" placeholder="已支付额">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						已退款额：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control amount" name="amount_refund" id="amount_refund" type="text" value="{$Order['amount_refund']}" placeholder="已退款额">
+					    </div>
+					 </div>
+				</div>
+            </div>
+          </div>
+          <script type="text/javascript">
+          
+          function resetLogistics(className){
+        	  $("."+className).val("");
+          }
+          
+          </script>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">物流信息
+              <a href="#" onclick="resetLogistics('logistics');return false;" style="float: right" >清空</a>
+              </h4>
+            </div>
+            <div class="panel-body">
+            	<div class="controls">  
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						物流单号：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="logistics_no" id="logistics_no" type="text" disabled="disabled" value="{$Order['logistics_no']}" placeholder="物流单号">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						物流公司：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="logistics_company" id="logistics_company" type="text" disabled="disabled" value="{$Order['logistics_company']}" placeholder="物流公司">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						邮编：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="zipcode" id="zipcode" type="text" disabled="disabled" value="{$Order['zipcode']}" placeholder="邮编">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						收货人：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="consignee" id="consignee" type="text" disabled="disabled" value="{$Order['consignee']}" placeholder="收货人">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						收货电话：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="consignee_phone" id="consignee_phone" disabled="disabled" type="text" value="{$Order['consignee_phone']}" placeholder="收货电话">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						收货地址：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="delivery_address" id="delivery_address" type="text" disabled="disabled" value="{$Order['delivery_address']}" placeholder="收货地址">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						物品重量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="weight" id="weight" type="text" disabled="disabled" value="{$Order['weight']}" placeholder="物品重量">
+					    </div>
+					 </div>
+					 <div class="form-group col-sm-6">
+					    <label class="col-sm-3 control-label text-right">
+						 已发货数量：
+					    </label>
+					    <div class="col-sm-9">
+					    	<input class="form-control logistics" name="num_delivered" id="num_delivered" disabled="disabled" type="text" value="{$Order['num_delivered']}" placeholder="已发货数量">
+					    </div>
+					 </div>
+				</div>
+            </div>
+          </div>
+      </div>
+</form>
+</div>
+<include file="./Application/Erp/View/Common/footer.html"/>

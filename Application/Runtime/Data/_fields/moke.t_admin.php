@@ -1,0 +1,1 @@
+a:8:{i:0;s:8:"admin_id";i:1;s:10:"admin_name";i:2;s:9:"admin_pwd";i:3;s:3:"gid";i:4;s:10:"createtime";i:5;s:13:"lastlogintime";s:3:"_pk";s:8:"admin_id";s:5:"_type";a:6:{s:8:"admin_id";s:7:"int(10)";s:10:"admin_name";s:8:"char(16)";s:9:"admin_pwd";s:8:"char(32)";s:3:"gid";s:6:"int(1)";s:10:"createtime";s:7:"int(10)";s:13:"lastlogintime";s:7:"int(10)";}}

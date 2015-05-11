@@ -1,0 +1,18 @@
+<script language="javascript" type="text/javascript" src="__PUBLIC__/jqplot/jquery.jqplot.min.js"></script> 
+<script language="javascript" type="text/javascript" src="__PUBLIC__/jqplot/plugins/jqplot.canvasTextRenderer.min.js"></script> 
+<script language="javascript" type="text/javascript" src="__PUBLIC__/jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script> 
+<script language="javascript" type="text/javascript" src="__PUBLIC__/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script> 
+<script language="javascript" type="text/javascript" src="__PUBLIC__/jqplot/plugins/jqplot.pointLabels.min.js"></script> 
+<script language="javascript" type="text/javascript" src="__PUBLIC__/jqplot/plugins/jqplot.pieRenderer.min.js"></script> 
+<script language="javascript" type="text/javascript" src="__PUBLIC__/jqplot/plugins/jqplot.donutRenderer.min.js"></script> 
+<script language="javascript" type="text/javascript" src="__PUBLIC__/jqplot/plugins/jqplot.barRenderer.min.js"></script> 
+<script language="javascript" type="text/javascript" src="__PUBLIC__/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script> 
+<script language="javascript" type="text/javascript" src="__PUBLIC__/jqplot/plugins/jqplot.highlighter.min.js"></script> 
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/jqplot/jquery.jqplot.min.css" /> 
+<script language="javascript" type="text/javascript">
+function tooltipContentEditor(str, seriesIndex, pointIndex, plot) {
+    // 显示series_label, x-axis_tick, y-axis 数据
+    //return plot.series[seriesIndex]["label"] + ", " + plot.data[seriesIndex][pointIndex];
+    return  plot.data[seriesIndex][pointIndex]+", " ;
+}
+</script>
