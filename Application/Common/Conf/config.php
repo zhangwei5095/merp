@@ -15,7 +15,7 @@ return array(
     'TO_NAME'   => 'Jason',
     'REPLY_EMAIL' => '', //回复EMAIL（留空则为发件人EMAIL）
     'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
-    'ADMIN' => '0',//是否屏蔽管理员修改功能;1 不屏蔽  0 屏蔽
+    'ADMIN' => '1',//是否屏蔽管理员修改功能;1 不屏蔽  0 屏蔽
     'DB_TYPE'=>'mysql',
     'DB_HOST'=>'127.0.0.1',
     'DB_PORT'=>'3306',
