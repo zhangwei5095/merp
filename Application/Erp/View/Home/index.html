@@ -1,5 +1,5 @@
-<include file="./Application/Erp/View/Common/header.html"/>
-<include file="./Application/Erp/View/Common/left.html"/>
+<include file="./Application/Dashboard\View/Common/header.html"/>
+<include file="./Application/Dashboard\View/Common/left.html"/>
 <div class="container" style="width: 100%;">
 	<br>
 	<div class="row">
@@ -14,7 +14,7 @@
 	<div class="row">
 		<div class="col-sm-12">
 			<a href="{:U('Home/index',array('refresh'=>1))}" class="btn btn-default" style="float:right;margin-bottom: 10px;" title="默认首页统计数据为缓存中数据，点击刷新更新缓存">刷新</a>
-			<a href="{:U('Home/dbback')}" class="btn btn-default" style="float:right;margin-bottom: 10px;margin-right: 10px;" title="">数据库备份</a>
+			<a href="{:U('Home/dbback')}" class="btn btn-default" style="float:right;margin-bottom: 10px;margin-right: 10px;" title="将当前数据库备份">数据库备份</a>
 		</div>
 		<div class="col-sm-12">
 			<div class="alert alert-info alert-dismissible" role="alert">
@@ -91,4 +91,4 @@
       </div>
 </div>
 </div>
-<include file="./Application/Erp/View/Common/footer.html"/>
+<include file="./Application/Dashboard\View/Common/footer.html"/>

@@ -56,7 +56,7 @@ class HomeController extends BaseController {
     
     
     
-    
+    //数据库备份
     public function dbback(){
         // 备份数据库
         $host = C('DB_HOST');
